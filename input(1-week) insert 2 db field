@@ -1,0 +1,47 @@
+   public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // for repeat weak
+        $string = $request['repeat_every'];
+        if ($string == 'custom') {
+            // for repeat custom weak
+            $first = $request['repeat_every_custom'];
+            $second = $request['repeat_type_custom'];
+            // $third = 1;
+        } else {
+            // for repeat weak
+            $time = explode('-', $string);
+            $first  = $time[0];
+            $second = $time[1];
+        }
+
+
+
+        try {
+            $tasks = Task::create([
+                'is_public' => $request['is_public'] ? 1 : 0,
+                'billable' => $request['billable'] ? 1 : 0,
+                'name' => $request['name'],
+                'startdate' => $request['startdate'],
+                'duedate' => $request['duedate'],
+                'priority' => $request['priority'],
+                'repeat_every' => $first,
+                'recurring_type' => $second,
+                'custom_recurring' =>  $request['repeat_every'] == 'custom' ? 1 : 0,
+                'priority' => $request['priority'],
+                'priority' => $request['priority'],
+                'priority' => $request['priority'],
+
+            ]);
+
+            // dd($tasks);
+
+            // return redirect()->back()->with('success', 'Task Created successfully!');
+            return redirect()->route('tasks.create')->with('success', 'Task Created successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('tasks.create')->with('error', $e->getMessage());
+        }
+    }
