@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Example</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<div class="col-md-6 mb-2 customFields" style="display: none;">
+    <input type="number" name="repeat_every_custom" id="repeat_every_custom" class="form-control" value="1" aria-invalid="false" min="1">
+    <div id="error-message" class="text-danger" style="display: none;">Value must be at least 1.</div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#repeat_every_custom').on('input', function() {
+        var value = $(this).val();
+        if (value < 1) {
+            $(this).val(1); // Set the value to 1 if it is less than 1
+            $('#error-message').show(); // Show an error message
+        } else {
+            $('#error-message').hide(); // Hide the error message if value is valid
+        }
+    });
+});
+</script>
+
+</body>
+</html>
