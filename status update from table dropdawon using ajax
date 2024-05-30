@@ -1,0 +1,114 @@
+ <td>
+                                                    <div class="dropdown">
+                                                        <a class="dropdown-toggle" type="button" id="dropdownMenu2"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                            {{-- <span id="statusBadge"
+                                                                class="badge rounded-pill bg-primary"></span> --}}
+                                                            @if ($data->status == 0)
+                                                                <span id="statusBadge"
+                                                                    class="badge rounded-pill bg-info"> In Progress
+                                                                </span>
+                                                            @elseif($data->status == 1)
+                                                                <span id="statusBadge"
+                                                                    class="badge rounded-pill bg-secondary">Not
+                                                                    Started</span>
+                                                            @elseif($data->status == 2)
+                                                                <span id="statusBadge"
+                                                                    class="badge rounded-pill bg-info">
+                                                                    Testing</span>
+                                                            @elseif($data->status == 3)
+                                                                <span id="statusBadge"
+                                                                    class="badge rounded-pill bg-success">
+                                                                    Awaiting Feedback</span>
+                                                            @elseif($data->status == 4)
+                                                                <span id="statusBadge"
+                                                                    class="badge rounded-pill bg-success">
+                                                                    Completed</span>
+                                                            @else
+                                                                <span id="statusBadge"
+                                                                    class="badge rounded-pill bg-danger">
+                                                                    Error</span>
+                                                            @endif
+                                                        </a>
+                                                        <ul class="dropdown-menu dropdown-menu-right"
+                                                            aria-labelledby="dropdownMenu2">
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="task_mark_as(0, {{ $data->id }}); return false;">Mark
+                                                                    as In Progress</a></li>
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="task_mark_as(1, {{ $data->id }}); return false;">Mark
+                                                                    as Not Start</a></li>
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="task_mark_as(2, {{ $data->id }}); return false;">Mark
+                                                                    as Testing</a></li>
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="task_mark_as(3, {{ $data->id }}); return false;">Mark
+                                                                    as Awaiting Feedback</a></li>
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="task_mark_as(4, {{ $data->id }}); return false;">Mark
+                                                                    as Complete</a></li>
+                                                        </ul>
+                                                    </div>
+
+
+                                                </td>
+
+
+                                                javavscript code:
+
+                                                
+                                                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        function task_mark_as(status, task_id) {
+            $.ajax({
+                url: '{{ route('tasks.status.update') }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    status: status,
+                    task_id: task_id
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Status Updated Successfully',
+                            timer: 1500 // 
+                        }).then((result) => {
+                            location.reload();
+                        });
+
+                    } else {
+                        console.error('Failed to update status');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    </script>
+
+    controller code:
+
+      public function status_update(Request $request)
+    {
+        $status = $request->input('status');
+        $taskId = $request->input('task_id');
+
+        $task = Task::find($taskId);
+        if (!$task) {
+            return response()->json(['success' => false, 'error' => 'Task not found']);
+        }
+
+        $task->status = $status;
+        $task->save();
+
+        return response()->json(['success' => true, 'status' => $status]);
+    }
+
+
+    route:
+  Route::post('/update-status', [MainTaskController::class, 'status_update'])->name('tasks.status.update');
+    
