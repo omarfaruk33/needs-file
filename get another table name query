@@ -1,0 +1,26 @@
+<td>
+                                                    @if (!empty($data->id))
+                                                        @php
+                                                            $assign = DB::table('task_assignes')
+                                                                ->where('taskid', $data->id)
+                                                                ->first();
+                                                        @endphp
+                                                        @if ($assign)
+                                                            @php
+                                                                $staffids = explode(',', $assign->staffid);
+                                                            @endphp
+                                                            @foreach ($staffids as $staffid)
+                                                                @php
+                                                                    $staff = DB::table('users')
+                                                                        ->where('id', $staffid)
+                                                                        ->first();
+                                                                @endphp
+                                                                @if ($staff)
+                                                                    {{ $staff->name }} <br>
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            Not Found
+                                                        @endif
+                                                    @endif
+                                                </td>
