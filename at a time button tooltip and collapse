@@ -1,0 +1,58 @@
+               <a href="#" class="btn btn-light" id="collapseButton" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" data-bs-original-title="Timesheets"
+                                    data-bs-target="#flush-tasktimer" aria-expanded="false"
+                                    aria-controls="flush-tasktimer "><span><i class='bx bx-spreadsheet'></i></span></a>
+
+
+
+
+    <div id="flush-tasktimer" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                                data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <div class="mb-3">
+                                        <label for="ticket_description" class="form-label">Date to be
+                                            notified
+                                        </label>
+                                        <input type="date" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ticket_description" class="form-label">Set reminder to
+                                        </label>
+                                        <select name="" class="select2" id="">
+                                            <option></option>
+                                            <option value="1">1</option>
+                                            <option value="1">1</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="ticket_description" class="form-label">Note
+                                            Description</label>
+                                        <textarea name="ticket_description" class="form-control" id="input11" placeholder="Note Description." rows="4"></textarea>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            Send also an email for this reminder
+                                        </label>
+                                    </div>
+                                    <div class="mb-3 text-end">
+                                        <button class="btn btn-primary">Create Reminder</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+using jquery cdn
+
+
+ <script>
+        $(document).ready(function() {
+            // Handle timesheets collapse
+            $('#collapseButton').on('click', function(e) {
+                e.preventDefault();
+                $('#flush-tasktimer').collapse('toggle');
+            });
+        });
+    </script>
+
