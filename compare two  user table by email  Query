@@ -1,0 +1,2 @@
+ $email = User::pluck('email');
+ $stafffs = Staff::whereIn('email', $email)->where('is_not_staff', null)->get();
