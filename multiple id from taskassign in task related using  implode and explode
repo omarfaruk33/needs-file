@@ -1,0 +1,12 @@
+   $assign = TaskAssigne::where('taskid', $id)->first();
+        $assignees = explode(',', $assign->staffid);
+
+
+       @if ($assignees->isNotEmpty())
+                                        @foreach ($assignees as $assignee)
+                                            <option value="{{ $tag->id }}"
+                                                {{ in_array($tag->id, $assignee) ? 'selected' : '' }}>
+                                                {{ $tag->tags }}
+                                            </option>
+                                        @endforeach
+                                    @endif
