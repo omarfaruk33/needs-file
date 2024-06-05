@@ -1,11 +1,11 @@
-   $assign = TaskAssigne::where('taskid', $id)->first();
-        $assignees = explode(',', $assign->staffid);
+ $tagtable = Tagtable::where('rel_id', $id)->where('rel_type', 'task')->first();
+        $taggs = explode(',', $tagtable->tag_id);
 
 
-       @if ($assignees->isNotEmpty())
-                                        @foreach ($assignees as $assignee)
+      @if ($tags->isNotEmpty())
+                                        @foreach ($tags as $tag)
                                             <option value="{{ $tag->id }}"
-                                                {{ in_array($tag->id, $assignee) ? 'selected' : '' }}>
+                                                {{ in_array($tag->id, $taggs) ? 'selected' : '' }}>
                                                 {{ $tag->tags }}
                                             </option>
                                         @endforeach
