@@ -1,0 +1,27 @@
+insert:
+          'tag_id' => isset($request['tags']) ? implode(',', (array) $request['tags']) : '',
+
+Fetch:
+    
+         $data['tasks'] = Task::->with('tagables')->get();
+
+relation:
+
+           public function tagables()
+              {
+                  return $this->hasMany(Tagtable::class, 'rel_id', 'id')->where('rel_type', 'task');
+              }
+
+query:
+
+         @foreach ($data->tagables as $tags)
+          @php
+              $tagIds = explode(',', $tags->tag_id);
+              $tags = \App\Models\Tag::whereIn('id', $tagIds)->get();
+          @endphp
+          @foreach ($tags as $tagId)
+              <span class="badge bg-info">
+                  {{ $tagId->tags }}
+              </span>
+          @endforeach
+      @endforeach
