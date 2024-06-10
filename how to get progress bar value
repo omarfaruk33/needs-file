@@ -1,0 +1,17 @@
+     <div class="col-md-12 mb-2">
+                                            <label for="progress" class="form-label">Progress <p><span
+                                                        id="rangeValue">0</span>%</p></label>
+
+                                            <input type="range" class=" progress progress-bar form-range "
+                                                min="0" max="100" id="customRange2" value="0">
+
+                                        </div>
+                                        <script>
+                                            const rangeInput = document.getElementById('customRange2');
+                                            const rangeValueDisplay = document.getElementById('rangeValue');
+
+                                            // Update the displayed value when the range input changes
+                                            rangeInput.addEventListener('input', function() {
+                                                rangeValueDisplay.textContent = rangeInput.value;
+                                            });
+                                        </script>
