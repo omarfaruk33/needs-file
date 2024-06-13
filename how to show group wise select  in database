@@ -1,0 +1,31 @@
+<select id="available_features" name="available_features[]" class="form-select select2" multiple="multiple">
+    @php
+        $salesGroupOpen = false;
+    @endphp
+    
+    @forelse ($projectvissiabletabs as $key => $projectvissiabletab)
+        @if ($key >= 4 && $key <= 8)
+            @if (!$salesGroupOpen)
+                <optgroup label="Sales">
+                @php $salesGroupOpen = true; @endphp
+            @endif
+            <option value="{{ $projectvissiabletab->value }}">
+                {{ $projectvissiabletab->name }}
+            </option>
+        @else
+            @if ($salesGroupOpen)
+                </optgroup>
+                @php $salesGroupOpen = false; @endphp
+            @endif
+            <option value="{{ $projectvissiabletab->value }}">
+                {{ $projectvissiabletab->name }}
+            </option>
+        @endif
+    @empty
+        <option value="">No available features</option>
+    @endforelse
+
+    @if ($salesGroupOpen)
+        </optgroup>
+    @endif
+</select>
