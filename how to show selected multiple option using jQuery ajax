@@ -1,0 +1,59 @@
+ <script>
+        $(document).ready(function() {
+            $('#customer_id').change(function() {
+                customer();
+            });
+            customer();
+
+            function customer() {
+                var value = $('#customer_id').val();
+                var project_id = $('#project_id').val();
+                if (value) {
+                    $('#notify_contacts').prop('disabled', false);
+                } else {
+                    $('#notify_contacts').prop('disabled', true);
+                }
+                $.ajax({
+                    url: '{{ route('projects.customercontactshow') }}',
+                    type: 'GET',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        customerid: value,
+                        projectId: project_id,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        $('#notify_contacts').empty();
+                        // Populate contacts dropdown
+                        $.each(response.data, function(index, contact) {
+                            $('#notify_contacts').append('<option value="' + contact.id +
+                                '">' +
+                                contact.firstname + ' ' +
+                                contact.lastname + '</option>');
+                        });
+                        // Select selected contacts
+                        $.each(response.selectedContacts, function(index, selectedId) {
+                            $('#notify_contacts').find('option[value="' + selectedId + '"]')
+                                .prop('selected', true);
+                        });
+                    },
+                    error: function(xhr) {
+                        console.log('An error occurred: ' + xhr.responseText);
+                    }
+                });
+            }
+        });
+    </script>
+
+  public function customercontactshow(Request $request)
+    {
+        $contacts = Contact::where('customer_id', $request->customerid)->get();
+
+        $selectedContacts = Project::where('id', $request->projectId)->pluck('notify_contacts')->first();
+        $selectedContactsArray = explode(',', $selectedContacts);
+
+        return response()->json([
+            'data' => $contacts,
+            'selectedContacts' => $selectedContactsArray,
+        ]);
+    }
